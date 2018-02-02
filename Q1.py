@@ -25,7 +25,7 @@ if __name__ == "__main__":
 	class_positive = create_class(DS1_m_1,DS1_cov,2000)
 
 	# need to add respective labels as the 21st column?
-	class_negative = np.append(class_negative, np.zeros((2000,1)), axis=1)
+	class_negative = np.append(class_negative, -1*np.ones((2000,1)), axis=1)
 	class_positive = np.append(class_positive, np.ones((2000,1)), axis=1)
 
 	# converted both classes to panads datafarme
@@ -40,13 +40,23 @@ if __name__ == "__main__":
 
 	# create combined training set and test set (put both classes training sets and test sets together)
 	train_set = np.concatenate((np.array(training_class_negative),np.array(training_class_positive)))
-	# random shuffle
-	np.random.shuffle(train_set)
 	test_set = np.concatenate((np.array(testing_class_negative),np.array(testing_class_positive)))
 	# randome shuffle
+	np.random.shuffle(train_set)
 	np.random.shuffle(test_set)
 	
-	# dont know what to do frm here onwards
-	# what do i have so far?
-	# 1 large training set (mixed classes) 1 large test set (mixed classes)
-	# want to plot the two classes (from training set?)
+	# simple visualization ofthe two classes (from training set)
+	
+	# get all labels of training set 
+	labels = train_set[:,-1]
+	# create new list of 100 samples where they are in class negative/positive
+	c_neg = train_set[labels == -1][:100]
+	c_pos = train_set[labels == 1][:100]
+	
+	# plotting the 1st feat against the 2nd feat? for both classes?
+	plt.title('Simple visualization of classes')
+	plt.scatter(c_neg[:,0], c_neg[:,1], c = 'b', label = 'class_negative')
+	plt.scatter(c_pos[:,0], c_pos[:,1], c = 'r', label = 'class_positive')
+	plt.legend(loc = 0)
+	plt.show()
+
