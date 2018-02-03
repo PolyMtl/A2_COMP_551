@@ -45,15 +45,18 @@ if __name__ == "__main__":
 	np.random.shuffle(train_set)
 	np.random.shuffle(test_set)
 	
-	# simple visualization ofthe two classes (from training set)
-	
+	# write training and test set to csv
+	pd.DataFrame(data = train_set).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv')
+	pd.DataFrame(data = test_set).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv')
+
+	# simple visualization of the two classes (from training set)
 	# get all labels of training set 
 	labels = train_set[:,-1]
 	# create new list of 100 samples where they are in class negative/positive
 	c_neg = train_set[labels == -1][:100]
 	c_pos = train_set[labels == 1][:100]
 	
-	# plotting the 1st feat against the 2nd feat? for both classes?
+	# plotting the 1st feat against the 2nd feat for both classes
 	plt.title('Simple visualization of classes')
 	plt.scatter(c_neg[:,0], c_neg[:,1], c = 'b', label = 'class_negative')
 	plt.scatter(c_pos[:,0], c_pos[:,1], c = 'r', label = 'class_positive')
