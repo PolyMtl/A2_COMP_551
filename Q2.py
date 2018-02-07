@@ -73,6 +73,11 @@ def calc_opt_cov_matrix(samples_C0, samples_C1, opt_mean_C0, opt_mean_C1):
 	opt_cov = np.divide(np.add(cov_C0,cov_C1),2800)
 	return opt_cov
 
+def run_prob_LDA(opt_pi,opt_cov,opt_mean_C0,opt_mean_C1):
+	w = np.dot(np.linalg.inv(opt_cov),np.subtract(opt_mean_C1,opt_mean_C0))
+	w_0 = np.divide((np.dot(np.dot(opt_mean_C1.T,np.linalg.inv(opt_cov)),opt_mean_C1)),-2) + np.divide((np.dot(np.dot(opt_mean_C0.T,np.linalg.inv(opt_cov)),opt_mean_C0)),2) + np.log(opt_pi/(1-opt_pi))
+
+	return (w,w_0)
 if __name__ == "__main__":
 	# get training set
 	training_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv', header = None).dropna(axis=1, how='any')
@@ -81,9 +86,35 @@ if __name__ == "__main__":
 	samples_C0,samples_C1 = get_class_samples(training_set)
 	opt_mean_C0, opt_mean_C1 = calc_opt_mean_vectors(samples_C0,samples_C1)
 	opt_cov = calc_opt_cov_matrix(samples_C0,samples_C1,opt_mean_C0,opt_mean_C1)
-	# P(C_k | x)
-	w = np.dot(np.linalg.inv(opt_cov),np.subtract(opt_mean_C1,opt_mean_C0))
-	w_0 = np.divide((np.dot(np.dot(opt_mean_C1.T,np.linalg.inv(opt_cov)),opt_mean_C1)),-2) + np.divide((np.dot(np.dot(opt_mean_C0.T,np.linalg.inv(opt_cov)),opt_mean_C0)),2) + np.log(opt_pi/(1-opt_pi))
+	w,w_0 = run_prob_LDA(opt_pi,opt_cov,opt_mean_C0,opt_mean_C1)
+
+	# get test set
+	test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv',header = None).dropna(axis=1, how='any')
+
+	true_pos, false_pos, false_neg, f_measure = np.zeros(4)
+	
+	for i,test_sample in test_set.iterrows():
+		test_sample = np.array(test_sample)
+		true = test_sample[20]
+		test_sample = test_sample[:-1]
+		prediction = np.dot(w,test_sample) + w_0
+		if(prediction>=(0.5)):
+			if(true == 1):
+				true_pos +=1
+			elif(true == 0):
+				false_pos +=1
+		elif(prediction<(0.5) and true==1):
+			false_neg +=1
+
+	precision = true_pos/(true_pos+false_pos)
+	recall = true_pos/(true_pos+false_neg)
+	f_measure = 2*(precision*recall)/(precision+recall)
+	
+	print precision
+	print recall
+	print f_measure
+
+
 
 
 
