@@ -45,10 +45,11 @@ if __name__ == "__main__":
 	np.random.shuffle(train_set)
 	np.random.shuffle(test_set)
 	
+	DS1 = np.concatenate((train_set,test_set))
 	# write training and test set to csv
 	pd.DataFrame(data = train_set).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv', index = False, header = False)
 	pd.DataFrame(data = test_set).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv', index = False, header = False)
-
+	pd.DataFrame(data = DS1).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1.csv',index = False, header = False)
 	
 	# ***** simple visualization of the two classes (from training set) ****** 
 	# # get all labels of training set 
