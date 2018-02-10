@@ -50,5 +50,12 @@ if __name__ == "__main__":
 	c2 = np.concatenate((np.concatenate((np.array(c2_m1),np.array(c2_m2))),np.array(c2_m3)))
 	np.random.shuffle(c2)
 
-	DS2 = np.concatenate((c1,c2))
-	pd.DataFrame(data = DS2).to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2.csv',index = False, header = False)
+	DS2 = pd.DataFrame(data = np.concatenate((c1,c2)))
+	training_set = DS2.sample(frac = 0.7)
+	test_set = DS2.drop(training_set.index)
+
+	DS2.to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2.csv',index = False, header = False)
+	training_set.to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2_train.csv',index = False, header = False)
+	test_set.to_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2_test.csv',index = False, header = False)
+
+
