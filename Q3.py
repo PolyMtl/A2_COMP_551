@@ -1,4 +1,4 @@
-# Q3
+# Q3 and Q5
 import pandas as pd
 import numpy as np
 import math
@@ -52,44 +52,70 @@ def run_KNN(test_set,training_set,test_labels,training_labels, k):
 	return precision, recall, f_measure
 
 if __name__ == "__main__":
-	start = time.clock()
+	# DS1
 	# get training and test set
-	training_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv', header = None).dropna(axis=1, how='any')
-	test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv', header = None).dropna(axis=1, how='any')
+	DS1_training_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv', header = None).dropna(axis=1, how='any')
+	DS1_test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv', header = None).dropna(axis=1, how='any')
 	
 	# get labels for each set
-	training_labels = np.array(training_set[[20]])
-	test_labels = np.array(test_set[[20]])
+	DS1_training_labels = np.array(DS1_training_set[[20]])
+	DS1_test_labels = np.array(DS1_test_set[[20]])
 	
 	# only dealing with samples, without lables
-	training_set = training_set.drop([20], axis = 1)
-	test_set = test_set.drop([20], axis = 1)
+	DS1_training_set = DS1_training_set.drop([20], axis = 1)
+	DS1_test_set = DS1_test_set.drop([20], axis = 1)
 	
 	# convert to array for ease of use
-	training_set = np.array(training_set)
-	test_set = np.array(test_set)
+	DS1_training_set = np.array(DS1_training_set)
+	DS1_test_set = np.array(DS1_test_set)
+
+	# DS2
+	# get training and test set
+	DS2_training_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2_train.csv', header = None).dropna(axis=1, how='any')
+	DS2_test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2_test.csv', header = None).dropna(axis=1, how='any')
+
+	# get labels for each set
+	DS2_training_labels = np.array(DS2_training_set[[20]])
+	DS2_test_labels = np.array(DS2_test_set[[20]])
+
+	# only dealing with samples, without lables
+	DS2_training_set = DS2_training_set.drop([20], axis = 1)
+	DS2_test_set = DS2_test_set.drop([20], axis = 1)
+
+	# convert to array for ease of use
+	DS2_training_set = np.array(DS2_training_set)
+	DS2_test_set = np.array(DS2_test_set)
+
 
 	k_arr = np.arange(1,21)
-	precision_arr = []
-	recall_arr = []
-	f_measure_arr = []
+	DS1_precision_arr = []
+	DS1_recall_arr = []
+	DS1_f_measure_arr = []
+
+	DS2_precision_arr = []
+	DS2_recall_arr = []
+	DS2_f_measure_arr = []
+
 	for k in k_arr:
-		precision, recall, f_measure = run_KNN(test_set, training_set, test_labels, training_labels,k)
-		precision_arr.append(precision)
-		recall_arr.append(recall)
-		f_measure_arr.append(f_measure)		
+		precision, recall, f_measure = run_KNN(DS1_test_set, DS1_training_set, DS1_test_labels, DS1_training_labels,k)
+		DS1_precision_arr.append(precision)
+		DS1_recall_arr.append(recall)
+		DS1_f_measure_arr.append(f_measure)
+		precision, recall, f_measure = run_KNN(DS2_test_set, DS2_training_set, DS2_test_labels, DS2_training_labels,k)
+		DS2_precision_arr.append(precision)
+		DS2_recall_arr.append(recall)
+		DS2_f_measure_arr.append(f_measure)
 
 
-	plt.figure(figsize=(20,8), dpi=80)
-	plt.plot(k_arr, f_measure_arr, '-', label = 'F-Measure')
-	plt.plot(k_arr, recall_arr, '-', label = 'Recall')
-	plt.plot(k_arr, precision_arr, '-', label = 'Precision')
-	plt.xlabel('K-Value')
-	plt.ylabel('Value')
-	plt.legend(loc=1)
-	plt.title('Accuracy Values')
-	plt.show()
-	# print time.clock() - start
+	# plt.figure(figsize=(20,8), dpi=80)
+	# plt.plot(k_arr, DS1_f_measure_arr, '-', label = 'F-Measure')
+	# plt.plot(k_arr, DS1_recall_arr, '-', label = 'Recall')
+	# plt.plot(k_arr, DS1_precision_arr, '-', label = 'Precision')
+	# plt.xlabel('K-Value')
+	# plt.ylabel('Value')
+	# plt.legend(loc=1)
+	# plt.title('Accuracy Values')
+	# plt.show()
 
 
 
