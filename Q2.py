@@ -80,7 +80,7 @@ def run_prob_LDA(opt_pi,opt_cov,opt_mean_C0,opt_mean_C1):
 	return (w,w_0)
 
 def calc_best_fit_measures(test_set, w, w_0):
-	true_pos, false_pos, false_neg, f_measure = np.zeros(4)
+	true_pos, false_pos, false_neg, true_neg,f_measure = np.zeros(5)
 	
 	for i,test_sample in test_set.iterrows():
 		test_sample = np.array(test_sample)
@@ -94,12 +94,15 @@ def calc_best_fit_measures(test_set, w, w_0):
 				false_pos +=1
 		elif(prediction<(0.5) and true==1):
 			false_neg +=1
+		elif(prediction<(0.5) and true==0):
+			true_neg +=1
 
+	accuracy = (true_pos + true_neg)/(len(test_set))	
 	precision = true_pos/(true_pos+false_pos)
 	recall = true_pos/(true_pos+false_neg)
 	f_measure = 2*(precision*recall)/(precision+recall)
 
-	return (precision, recall, f_measure)
+	return (accuracy,precision, recall, f_measure)
 
 
 if __name__ == "__main__":
@@ -116,8 +119,9 @@ if __name__ == "__main__":
 	# get test set
 	DS1_test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_test.csv',header = None).dropna(axis=1, how='any')
 	
-	precision_DS1, recall_DS1, f_measure_DS1 = calc_best_fit_measures(DS1_test_set, DS1_w, DS1_w_0)
+	accuracy,precision_DS1, recall_DS1, f_measure_DS1 = calc_best_fit_measures(DS1_test_set, DS1_w, DS1_w_0)
 	print "DS1:	"
+	print "accuracy:	", accuracy
 	print "precision:	", precision_DS1
 	print "recall:	", recall_DS1
 	print "f_measure:	", f_measure_DS1
@@ -135,8 +139,9 @@ if __name__ == "__main__":
 	# get test set
 	DS2_test_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS2_test.csv',header = None).dropna(axis=1, how='any')
 	
-	precision_DS2, recall_DS2, f_measure_DS2 = calc_best_fit_measures(DS2_test_set, DS2_w, DS2_w_0)
+	accuracy,precision_DS2, recall_DS2, f_measure_DS2 = calc_best_fit_measures(DS2_test_set, DS2_w, DS2_w_0)
 	print "DS2:	"
+	print "accuracy:	", accuracy
 	print "precision:	", precision_DS2
 	print "recall:	", recall_DS2
 	print "f_measure:	", f_measure_DS2
