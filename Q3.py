@@ -4,6 +4,7 @@ import numpy as np
 import math
 import time
 import heapq
+import matplotlib.pyplot as plt
 
 def run_KNN(test_set,training_set,test_labels,training_labels, k):
 	pred_label_arr = []
@@ -27,10 +28,10 @@ def run_KNN(test_set,training_set,test_labels,training_labels, k):
 			if (label == 1):
 				count_1 +=1
 
-			if (count_1 >= count_0):
-				pred_label = 1
-			else:
-				pred_label = 0
+		if (count_1 >= count_0):
+			pred_label = 1
+		else:
+			pred_label = 0
 		
 		pred_label_arr.append(pred_label)	
 	
@@ -68,14 +69,26 @@ if __name__ == "__main__":
 	training_set = np.array(training_set)
 	test_set = np.array(test_set)
 
-	k = np.arange(1,21)
-	for k in k:
+	k_arr = np.arange(1,21)
+	precision_arr = []
+	recall_arr = []
+	f_measure_arr = []
+	for k in k_arr:
 		precision, recall, f_measure = run_KNN(test_set, training_set, test_labels, training_labels,k)
-		print "k:	",k
-		print "precision:	",precision
-		print "recall:	",recall
-		print "f_measure:	",f_measure		
+		precision_arr.append(precision)
+		recall_arr.append(recall)
+		f_measure_arr.append(f_measure)		
 
+
+	plt.figure(figsize=(20,8), dpi=80)
+	plt.plot(k_arr, f_measure_arr, '-', label = 'F-Measure')
+	plt.plot(k_arr, recall_arr, '-', label = 'Recall')
+	plt.plot(k_arr, precision_arr, '-', label = 'Precision')
+	plt.xlabel('K-Value')
+	plt.ylabel('Value')
+	plt.legend(loc=1)
+	plt.title('Accuracy Values')
+	plt.show()
 	# print time.clock() - start
 
 
