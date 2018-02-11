@@ -79,8 +79,6 @@ def run_prob_LDA(opt_pi,opt_cov,opt_mean_C0,opt_mean_C1):
 
 	return (w,w_0)
 
-def get_test_results()
-
 if __name__ == "__main__":
 	# get training set
 	training_set = pd.read_csv(r'/Users/vivek/git/A2_COMP_551/Datasets/DS1_train.csv', header = None).dropna(axis=1, how='any')
