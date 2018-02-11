@@ -1,6 +1,6 @@
 # Q4
-# c1 --> pos
-# c2 --> neg
+# c1 --> pos (1)
+# c2 --> neg (0)
 import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -41,6 +41,7 @@ if __name__ == "__main__":
 	c1_m3 = pd.DataFrame(data = create_class(DS2_c1_m3, DS2_Cov3,2000)).sample(frac = 0.48)
 
 	c1 = np.concatenate((np.concatenate((np.array(c1_m1),np.array(c1_m2))),np.array(c1_m3)))
+	c1 = np.append(c1,np.ones((2000,1)), axis=1)
 	np.random.shuffle(c1)
 
 	c2_m1 = pd.DataFrame(data = create_class(DS2_c2_m1, DS2_Cov1,2000)).sample(frac = 0.1)
@@ -48,9 +49,12 @@ if __name__ == "__main__":
 	c2_m3 = pd.DataFrame(data = create_class(DS2_c2_m3, DS2_Cov3,2000)).sample(frac = 0.48)
 
 	c2 = np.concatenate((np.concatenate((np.array(c2_m1),np.array(c2_m2))),np.array(c2_m3)))
+	c2 = np.append(c2,np.zeros((2000,1)), axis=1)
 	np.random.shuffle(c2)
 
-	DS2 = pd.DataFrame(data = np.concatenate((c1,c2)))
+	DS2 = np.concatenate((c1,c2))
+	np.random.shuffle(DS2)
+	DS2 = pd.DataFrame(data = DS2)
 	training_set = DS2.sample(frac = 0.7)
 	test_set = DS2.drop(training_set.index)
 
